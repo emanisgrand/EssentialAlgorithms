@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AStarName;
+using System;
 
 class Djikstra {		
 		static int V = 9;
@@ -52,7 +53,7 @@ class Djikstra {
 		}
 }
 
-namespace AStar{
+namespace AStarName{
 		public class Cell{
 				public Cell parent;
 				public int g, h, f, x, y;
@@ -66,6 +67,12 @@ namespace AStar{
 				List<Cell> openList, closedList;
 
 				// initialize the grid, openlist and closedlist
+
+				public AStar(Cell[,] grid){
+						this.grid = grid;
+						this.openList = new List<Cell>();
+						this.closedList = new List<Cell>();
+				}
 
 				public void FindPath(Cell start, Cell end){
 
@@ -106,8 +113,9 @@ namespace AStar{
 						}
 				}
 
-				private int CalculateHScore(Cell neighbor, Cell end) {
-						throw new NotImplementedException();
+				private int CalculateHScore(Cell currentCell, Cell end) {
+						// We'll use Manhattan distance here, which is just the difference in x and y coordinates.
+						return Math.Abs(currentCell.x - end.x) + Math.Abs(currentCell.y - end.y);	
 				}
 
 				private IEnumerable<Cell> GetWalkableNeighbors(Cell currentCell) {
@@ -152,6 +160,14 @@ namespace AStar{
 
 class Program{
 		static int Main(string[] args) {
+				int gridSize = 5;
+				
+				Cell[,] grid = new Cell[gridSize, gridSize];
+
+				AStar astar = new AStar(grid);
+
+				astar.FindPath(grid[0,0], grid[4,4]);
+				/*
 				int[,] graph = new int[,] {   { 0,  4, 0,  0,  0,  0, 0,  8, 0 }, // I made a really good graph to debug here.
 																			{ 4,  0, 8,  0,  0,  0, 0, 11, 0 },
 																			{ 0,  8, 0,  7,  0,  4, 0,  0, 2 },
@@ -166,7 +182,7 @@ class Program{
 				Djikstra d = new Djikstra();
 
 				d.DjikstraAlgorithm(graph, 1);
-
+				*/
 				return 0;
 		}
 }
